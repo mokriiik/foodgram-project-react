@@ -6,7 +6,7 @@ class AdminOrAuthorPermission(permissions.BasePermission):
     или админу"""
 
     def has_permission(self, request, view):
-        return(
+        return (
             request.method in permissions.SAFE_METHODS or
             request.user.is_authenticated
         )
