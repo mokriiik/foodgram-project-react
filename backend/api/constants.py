@@ -3,14 +3,14 @@ MAX_LENGTH_USERNAME = 150
 MAX_LENGTH_NAME = 200
 MAX_LENGTH_COLOR = 7
 
-PINK = '#F08080'
-ORANGE = '#FF8C00'
-BLUE = '#7FFFD4'
-YELLOW = '#FFFF00'
+PINK = "#F08080"
+ORANGE = "#FF8C00"
+BLUE = "#7FFFD4"
+YELLOW = "#FFFF00"
 
 COLORS = [
-    (PINK, 'Розовый'),
-    (ORANGE, 'Оранжевый'),
-    (BLUE, 'Синий'),
-    (YELLOW, 'Жёлтый'),
+    (PINK, "Розовый"),
+    (ORANGE, "Оранжевый"),
+    (BLUE, "Синий"),
+    (YELLOW, "Жёлтый"),
 ]

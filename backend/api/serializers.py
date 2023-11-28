@@ -1,21 +1,18 @@
 import base64
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core import exceptions as django_exceptions
 from django.core.files.base import ContentFile
 from django.core.validators import validate_email
-from django.core import exceptions as django_exceptions
-from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from rest_framework import serializers
 
-from recipes.models import (
-    Recipe, Ingredient, Tag,
-    IngredientRecipe, Favorite,
-    ShoppingCart)
-from users.models import Follow
-from api.mixins import UsernameValidationMixin
 from api.constants import MAX_LENGTH_EMAIL, MAX_LENGTH_USERNAME
-
+from api.mixins import UsernameValidationMixin
+from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
+                            ShoppingCart, Tag)
+from users.models import Follow
 
 User = get_user_model()
 
