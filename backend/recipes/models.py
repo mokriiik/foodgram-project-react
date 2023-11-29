@@ -101,12 +101,12 @@ class TagsRecipe(models.Model):
     class Meta:
         verbose_name = "Тег в рецепте"
         verbose_name_plural = "Теги в рецепте"
-        constraints = (
+        constraints = [
             models.UniqueConstraint(
                 fields=('tag', 'recipe'),
                 name='Unique tag in recipe'
             )
-        )
+        ]
 
 
 class IngredientRecipe(models.Model):
@@ -135,9 +135,9 @@ class IngredientRecipe(models.Model):
             models.UniqueConstraint(
                 fields=(
                     "recipe",
-                    "ingredient",
+                    "ingredient"
                 ),
-                name="Unique Ingredients",
+                name="Unique Ingredients"
             )
         ]
 
@@ -167,12 +167,12 @@ class Favorite(models.Model):
         ordering = ["-pub_date"]
         verbose_name = "Избранное"
         verbose_name_plural = "Избранные"
-        constraints = (
+        constraints = [
             models.UniqueConstraint(
                 fields=('user', 'recipe'),
                 name='Unique user in recipe'
             )
-        ) 
+        ]
         
 
     def __str__(self):
@@ -201,15 +201,15 @@ class ShoppingCart(models.Model):
         ordering = ["-pub_date"]
         verbose_name = "Список покупок"
         verbose_name_plural = "Списки покупок"
-        constraints = (
+        constraints = [
             models.UniqueConstraint(
                 fields=(
                     "recipe",
                     "user",
                 ),
-                name="Unique shopping cart",
-            ),
-        )
+                name="Unique shopping cart"
+            )
+        ]
 
     def __str__(self) -> str:
         return f"{self.user} -> {self.recipe}"
