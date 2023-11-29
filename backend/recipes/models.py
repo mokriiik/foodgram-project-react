@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -63,9 +64,11 @@ class Recipe(models.Model):
         through_fields=("recipe", "ingredient"),
         related_name="recipes",
         blank=True,
+        verbose_name="Ингредиенты"
     )
     tags = models.ManyToManyField(Tag, through="TagsRecipe",
-                                  related_name="recipes")
+                                  related_name="recipes",
+                                  verbose_name="Теги")
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name="Время приготовления",
         default=0,
@@ -98,6 +101,12 @@ class TagsRecipe(models.Model):
     class Meta:
         verbose_name = "Тег в рецепте"
         verbose_name_plural = "Теги в рецепте"
+        constraints = (
+            models.UniqueConstraint(
+                fields=('tag', 'recipe'),
+                name='Unique tag in recipe'
+            )
+        )
 
 
 class IngredientRecipe(models.Model):
@@ -116,6 +125,7 @@ class IngredientRecipe(models.Model):
     amount = models.PositiveSmallIntegerField(
         verbose_name="Количество ингредиентов",
         default=0,
+        validators=[MinValueValidator(0)]
     )
 
     class Meta:
@@ -157,6 +167,13 @@ class Favorite(models.Model):
         ordering = ["-pub_date"]
         verbose_name = "Избранное"
         verbose_name_plural = "Избранные"
+        constraints = (
+            models.UniqueConstraint(
+                fields=('user', 'recipe'),
+                name='Unique user in recipe'
+            )
+        ) 
+        
 
     def __str__(self):
         return f"{self.user} favorite {self.recipe}"
