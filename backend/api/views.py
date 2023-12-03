@@ -6,8 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import (AllowAny, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (AllowAny, IsAuthenticated)
 from rest_framework.response import Response
 
 from api.filters import RecipeFilter
@@ -124,8 +123,16 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ["name"]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    search_fields = ['name']
+    lookup_field = 'name__istartswith'
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = self.queryset
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name__istartswith=name)
+        return queryset
 
 
 class TagViewSet(viewsets.ModelViewSet):
