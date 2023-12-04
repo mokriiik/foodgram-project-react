@@ -1,4 +1,5 @@
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -55,7 +56,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=MAX_LENGTH_NAME,
                             verbose_name="Название")
     image = models.ImageField(
-        verbose_name="Картинка",
+        verbose_name="Картинка"
     )
     text = models.TextField(verbose_name="Описание")
     ingredients = models.ManyToManyField(
@@ -78,6 +79,14 @@ class Recipe(models.Model):
         auto_now_add=True,
         db_index=True,
     )
+
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit*1024*1024:
+            raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
+
+    image = models.ImageField(upload_to="/a/b/c/", validators=[validate_image])
 
     class Meta:
         ordering = ["-pub_date"]
