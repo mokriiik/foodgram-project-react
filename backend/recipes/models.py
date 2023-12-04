@@ -173,7 +173,6 @@ class Favorite(models.Model):
                 name='Unique user in recipe'
             )
         ]
-        
 
     def __str__(self):
         return f"{self.user} favorite {self.recipe}"
