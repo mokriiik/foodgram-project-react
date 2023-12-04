@@ -88,11 +88,6 @@ class SetPasswordSerializer(serializers.Serializer):
 
 class Base64ImageField(serializers.ImageField):
     """Картинки"""
-    MAX_SIZE = 5 * 1024 * 1024
-
-    def check_size(self, value):
-        if value.size > self.MAX_SIZE:
-            raise serializers.ValidationError(f"Размер изображения не должен превышать 5 МБ.")
 
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith('data:image'):
@@ -271,7 +266,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'error': 'Время приготовления не может быть < 1 минуты'})
         return value
-    
+
     def validate_image(self, image):
         print('Я ТУТ!!!')
         if image.size > self.MAX_SIZE:
